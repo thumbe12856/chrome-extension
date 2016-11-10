@@ -1,5 +1,6 @@
+var isRightClick = false;
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request && request.action === 'scrolling') {
+  	if(request && request.action === 'scrolling' && isRightClick) {
 		chrome.windows.getLastFocused(
 			{ populate: true }, function (window) {
 			var foundSelected = false;
@@ -17,7 +18,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			}
 		});
 
-		console.log('update info:');
+		/*console.log('update info:');
 		chrome.windows.getLastFocused(
 			{ populate: true }, function (window) {
 			var foundSelected = false;
@@ -25,8 +26,17 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			{
 				console.log(window.tabs[i]);
 			}
-		});
-		sendResponse('I am back.');
+		});*/
+		sendResponse('scroll back.');
+	}
+
+	else if(request && request.action === 'rightClickDown') {
+		isRightClick = true;
+		sendResponse('right click back.');
+	} 
+	else if(request && request.action === 'clickUp') {
+		isRightClick = false;
+		//sendResponse('click up back.');
 	}
 });
 
