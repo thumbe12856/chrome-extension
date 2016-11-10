@@ -8,6 +8,7 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 // send message from detectScroll.js to scroll.js
 var isRightClick = false;
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+	console.log(request.action === "rightClickUp");
   	if(request && request.action === "scrolling" && isRightClick) {
 		chrome.windows.getLastFocused (
 			{ populate: true }, function(window) {

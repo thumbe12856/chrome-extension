@@ -34,12 +34,16 @@ function rightClicking() {
 window.addEventListener("mouseup", function(e) {
 	// right click up
 	if (e.button === 2) {
-		clearTimeout(timeoutId);
-		chrome.runtime.sendMessage({
-				action: "rightClickUp"
-			}, function(response) {
-				//console.log(response);
-			}
-		);
+		stopScrolling();
 	}
 });
+
+function stopScrolling() {
+	clearTimeout(timeoutId);
+	chrome.runtime.sendMessage({
+			action: "rightClickUp"
+		}, function(response) {
+			//console.log(response);
+		}
+	);
+}
