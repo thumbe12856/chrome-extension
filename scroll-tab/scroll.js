@@ -1,9 +1,16 @@
+// execute detectScroll.js to detect mouse event.
+chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
+	if (changeInfo.status == "complete") {
+		chrome.tabs.executeScript(null, {file: "detectScroll.js"});
+	}
+});
+
+// send message from detectScroll.js to scroll.js
 var isRightClick = false;
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  	if(request && request.action === 'scrolling' && isRightClick) {
-		chrome.windows.getLastFocused(
-			{ populate: true }, function (window) {
-			var foundSelected = false;
+chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+  	if(request && request.action === "scrolling" && isRightClick) {
+		chrome.windows.getLastFocused (
+			{ populate: true }, function(window) {
 			for (var i = 0; i < window.tabs.length; i++)
 			{
 				// Finding the selected tab.
@@ -18,30 +25,23 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			}
 		});
 
-		/*console.log('update info:');
-		chrome.windows.getLastFocused(
+		/*
+		//console.log("update info:");
+		chrome.windows.getLastFocused (
 			{ populate: true }, function (window) {
-			var foundSelected = false;
 			for (var i = 0; i < window.tabs.length; i++)
-			{
 				console.log(window.tabs[i]);
-			}
-		});*/
-		sendResponse('scroll back.');
+		});
+		*/
+		sendResponse("scroll back.");
 	}
 
-	else if(request && request.action === 'rightClickDown') {
+	else if(request && request.action === "rightClickDown") {
 		isRightClick = true;
-		sendResponse('right click back.');
+		sendResponse("rightClickDown back.");
 	} 
-	else if(request && request.action === 'clickUp') {
+	else if(request && request.action === "rightClickUp") {
 		isRightClick = false;
-		//sendResponse('click up back.');
-	}
-});
-
-chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
-	if (changeInfo.status == 'complete') {
-		chrome.tabs.executeScript(null, {file: "detectScroll.js"});
+		sendResponse("rightClickUp back.");
 	}
 });

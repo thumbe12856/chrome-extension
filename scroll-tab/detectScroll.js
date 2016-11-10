@@ -1,10 +1,9 @@
-window.addEventListener('mousewheel', function(e) {
-	//console.log('mouse wheel');
-    wDelta = e.wheelDelta < 0 ? 'down' : 'up';
+// mouse wheel
+window.addEventListener("mousewheel", function(e) {
+    wDelta = e.wheelDelta < 0 ? "down" : "up";
 
-    //console.log('Send message to scroll js.');
 	chrome.runtime.sendMessage({
-			action: 'scrolling',
+			action: "scrolling",
 			direction: wDelta
 		}, function(response) {
 			//console.log(response);
@@ -12,31 +11,35 @@ window.addEventListener('mousewheel', function(e) {
 	);
 });
 
-//detect mouse down
+// mouse down
 var timeoutId = 0;
-window.addEventListener("mousedown", function(e){
-	console.log('mouse down');
+window.addEventListener("mousedown", function(e) {
+	// right click down
 	if (e.button === 2) {
+		// 50 ms to prevent scroll mousewheel too fast.
 		timeoutId = setTimeout(rightClicking, 50);
 	}
+	return false;
 });
 function rightClicking() {
-	//console.log('right clicking.........');
 	chrome.runtime.sendMessage({
-			action: 'rightClickDown'
+			action: "rightClickDown"
 		}, function(response) {
 			//console.log(response);
 		}
 	);
 }
 
-window.addEventListener("mouseup", function(){
-	clearTimeout(timeoutId);
-	//console.log('mouse up');
-	chrome.runtime.sendMessage({
-			action: 'clickUp'
-		}, function(response) {
-			//console.log(response);
-		}
-	);
+// mouse up
+window.addEventListener("mouseup", function(e) {
+	// right click up
+	if (e.button === 2) {
+		clearTimeout(timeoutId);
+		chrome.runtime.sendMessage({
+				action: "rightClickUp"
+			}, function(response) {
+				//console.log(response);
+			}
+		);
+	}
 });
