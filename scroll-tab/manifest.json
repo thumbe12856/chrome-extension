@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "Scroll Tab",
-  "description": "When user scroll mousewheel, switch tab with its direction. Up to previous tab, down to next tab.",
+  "description": "When user hold right click and scroll mousewheel, switch tab with its direction. Up to previous tab, down to next tab.",
   "version": "1.0",
 
   "browser_action": {
