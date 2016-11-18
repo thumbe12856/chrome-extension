@@ -4,7 +4,11 @@
   "name": "Scroll Tab",
   "description": "When user hold right click and scroll mousewheel, switch tab with its direction. Up to previous tab, down to next tab.",
   "version": "1.0",
-
+  "icons": {
+    "16" : "icon.png",
+    "48" : "icon.png",
+    "128" : "icon.png"
+  },
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "index.html"
@@ -13,9 +17,8 @@
     "scripts": ["scroll.js"]
   },
   "permissions": [
+    "*://*/*",
     "activeTab",
-    "tabs",
-    "http://*/*",
-    "https://*/*"
+    "tabs"
   ]
 }

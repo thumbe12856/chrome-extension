@@ -14,10 +14,13 @@ window.addEventListener("mousewheel", function(e) {
 // mouse down
 var timeoutId = 0;
 window.addEventListener("mousedown", function(e) {
+	
 	// right click down
 	if (e.button === 2) {
-		// 50 ms to prevent scroll mousewheel too fast.
-		timeoutId = setTimeout(rightClicking, 50);
+		
+		// 200 ms to prevent scroll mousewheel too fast.
+		timeoutId = setTimeout(rightClicking, 200);
+
 	}
 	return false;
 });
@@ -32,18 +35,11 @@ function rightClicking() {
 
 // mouse up
 window.addEventListener("mouseup", function(e) {
-	// right click up
-	if (e.button === 2) {
-		stopScrolling();
-	}
-});
-
-function stopScrolling() {
 	clearTimeout(timeoutId);
 	chrome.runtime.sendMessage({
-			action: "rightClickUp"
+			action: "ClickUp"
 		}, function(response) {
 			//console.log(response);
 		}
 	);
-}
+});
