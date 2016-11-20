@@ -18,8 +18,8 @@ window.addEventListener("mousedown", function(e) {
 	// right click down
 	if (e.button === 2) {
 		
-		// 500 ms to prevent scroll mousewheel too fast.
-		timeoutId = setTimeout(rightClicking, 500);
+		// 1000 ms to prevent scroll mousewheel too fast.
+		timeoutId = setTimeout(rightClicking, 1000);
 
 	}
 	return false;
