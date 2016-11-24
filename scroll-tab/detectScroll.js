@@ -18,8 +18,8 @@ window.addEventListener("mousedown", function(e) {
 	// right click down
 	if (e.button === 2) {
 		
-		// 1000 ms to prevent scroll mousewheel too fast.
-		timeoutId = setTimeout(rightClicking, 1000);
+		// 100 ms to check that user is right clicking.
+		timeoutId = setTimeout(rightClicking, 100);
 
 	}
 	return false;
@@ -40,6 +40,24 @@ window.addEventListener("mouseup", function(e) {
 			action: "ClickUp"
 		}, function(response) {
 			//console.log(response);
+
+			// enable the contextmenu.
+			window.removeEventListener("contextmenu", disable, false);
 		}
 	);
 });
+
+// after user scrolls tab, and mouses up, disable the contextmenu.
+// when tab on focus, disable the contextmenu.
+window.addEventListener('focus', function() {
+	window.addEventListener("contextmenu", disable, false);
+});
+
+// when tab not on focus, enable the contextmenu.
+window.addEventListener('blur', function() {
+	window.removeEventListener("contextmenu", disable, false);
+});
+
+var disable = function(e) {
+	e.preventDefault();
+}
