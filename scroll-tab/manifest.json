@@ -2,8 +2,11 @@
   "manifest_version": 2,
 
   "name": "Scroll Tab",
-  "description": "When user hold right click and scroll mousewheel, switch tab with its direction. Up to previous tab, down to next tab.",
-  "version": "1.0",
+  "description": "
+    When user hold right clicking and scrolling mousewheel, switch tab with its direction. Up to previous tab, down to next tab.
+    When user Pressing Ctrl and Shift, and then key down PageUp or PageDown, move tab position with its direction. Up to previous tab, down to next tab.
+  ",
+  "version": "2.0",
   "icons": {
     "16" : "icon.png",
     "48" : "icon.png",
@@ -14,7 +17,7 @@
     "default_popup": "index.html"
   },
   "background": {
-    "scripts": ["scroll.js"]
+    "scripts": ["background.js"]
   },
   "permissions": [
     "*://*/*",

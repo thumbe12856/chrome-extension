@@ -1,6 +1,6 @@
 // mouse wheel
 window.addEventListener("mousewheel", function(e) {
-    wDelta = e.wheelDelta < 0 ? "down" : "up";
+    wDelta = e.wheelDelta < 0 ? 1 : -1;
 
 	chrome.runtime.sendMessage({
 			action: "scrolling",
@@ -24,6 +24,7 @@ window.addEventListener("mousedown", function(e) {
 	}
 	return false;
 });
+
 function rightClicking() {
 	chrome.runtime.sendMessage({
 			action: "rightClickDown"
@@ -49,12 +50,12 @@ window.addEventListener("mouseup", function(e) {
 
 // after user scrolls tab, and mouses up, disable the contextmenu.
 // when tab on focus, disable the contextmenu.
-window.addEventListener('focus', function() {
+window.addEventListener("focus", function() {
 	window.addEventListener("contextmenu", disable, false);
 });
 
 // when tab not on focus, enable the contextmenu.
-window.addEventListener('blur', function() {
+window.addEventListener("blur", function() {
 	window.removeEventListener("contextmenu", disable, false);
 });
 
