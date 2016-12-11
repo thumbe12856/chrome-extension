@@ -2,10 +2,7 @@
   "manifest_version": 2,
 
   "name": "Scroll Tab",
-  "description": "
-    When user hold right clicking and scrolling mousewheel, switch tab with its direction. Up to previous tab, down to next tab.
-    When user Pressing Ctrl and Shift, and then key down PageUp or PageDown, move tab position with its direction. Up to previous tab, down to next tab.
-  ",
+  "description": "Scrolling Chrome tab with mouse or keyboard.",
   "version": "2.0",
   "icons": {
     "16" : "icon.png",
