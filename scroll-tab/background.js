@@ -3,20 +3,27 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 	if (changeInfo.status == "complete") {
 		chrome.tabs.executeScript(tabId, {file: "detectScroll.js"});
 		chrome.tabs.executeScript(tabId, {file: "detectKeydown.js"});
+		chrome.tabs.executeScript(tabId, {file: "content.js"});
 	}
 });
 
 // message from detectScroll.js and detectKeydown.js
 var isRightClick = false;
 var popupWindowId = null;
+var enableFunctionScrollTab = true;
+var enableFunctionPageUp = true;
+var enableFunctionPopupTab = true;
+
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 	if(request) {
 		switch(request.action) {
 			//------- scrolling tab
 			case 'scrolling':
-				if(isRightClick) {
-					var responseMessage = scrollingEvent(request);
-					sendResponse(responseMessage);
+				if(enableFunctionScrollTab) {
+					if(isRightClick) {
+						var responseMessage = scrollingEvent(request);
+						sendResponse(responseMessage);
+					}
 				}
 			break;
 
@@ -32,19 +39,39 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 
 			//------- moving tab
 			case 'moving':
-				var responseMessage = movingEvent(request);
-				sendResponse(responseMessage);
+				if(enableFunctionPageUp) {
+					var responseMessage = movingEvent(request);
+					sendResponse(responseMessage);
+				}
 			break;
 
 			//------- popup tab
 			case 'popup':
-				var responseMessage = popupEvent(false);
-				sendResponse(responseMessage);
+				if(enableFunctionPopupTab) {
+					var responseMessage = popupEvent(false);
+					sendResponse(responseMessage);
+				}
 			break;
 
 			case 'justpop':
 				var responseMessage = popupEvent(true);
 				sendResponse(responseMessage);
+			break;
+
+			case 'enableFunction':
+				if(request.status === "updateStatus") {
+					enableFunctionScrollTab = request.enableFunctionScrollTab;
+					enableFunctionPageUp = request.enableFunctionPageUp;
+					enableFunctionPopupTab = request.enableFunctionPopupTab;
+				}
+
+				enableFunction = {
+					'enableFunctionScrollTab': enableFunctionScrollTab,
+					'enableFunctionPageUp': enableFunctionPageUp,
+					'enableFunctionPopupTab': enableFunctionPopupTab
+				}
+
+				sendResponse(enableFunction);
 			break;
 		}
 	}
