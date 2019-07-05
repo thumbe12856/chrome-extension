@@ -155,15 +155,6 @@ function popupEvent(justpop) {
 				}
 			});
 		}
-
-		/*
-		if(!justpop) {
-			// if the popUp window is been removed, then set popupWindowId to null.
-			chrome.windows.onRemoved.addListener(function() {
-				popupWindowId = null;
-			});
-		}
-		*/
 	});
 
 	return "popup back.";
