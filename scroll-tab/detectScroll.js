@@ -1,14 +1,23 @@
 // mouse wheel
+var mouseUpTimeOutId = 0;
 window.addEventListener("mousewheel", function(e) {
-    wDelta = e.wheelDelta < 0 ? 1 : -1;
+	wDelta = 0;
+	if(e.wheelDelta < 0) {
+		wDelta = 1;
+	} else if (e.wheelDelta > 0) {
+		wDelta = -1;
+	}
 
-	chrome.runtime.sendMessage({
-			action: "scrolling",
-			direction: wDelta
-		}, function(response) {
-			//console.log(response);
-		}
-	);
+    if(wDelta) {
+		chrome.runtime.sendMessage({
+				action: "scrolling",
+				direction: wDelta
+			}, function(response) {
+			}
+		);
+		//clearTimeout(mouseUpTimeOutId);
+		//mouseUpTimeOutId = setTimeout(mouseUp, 500);
+	}
 });
 
 // mouse down
@@ -17,47 +26,54 @@ window.addEventListener("mousedown", function(e) {
 	
 	// right click down
 	if (e.button === 2) {
-		
 		// 100 ms to check that user is right clicking.
 		timeoutId = setTimeout(rightClicking, 100);
-
 	}
+
 	return false;
 });
-
-function rightClicking() {
-	chrome.runtime.sendMessage({
-			action: "rightClickDown"
-		}, function(response) {
-			//console.log(response);
-		}
-	);
-}
 
 // mouse up
 window.addEventListener("mouseup", function(e) {
 	clearTimeout(timeoutId);
-	chrome.runtime.sendMessage({
-			action: "ClickUp"
-		}, function(response) {
-			//console.log(response);
-
-			// enable the contextmenu.
-			window.removeEventListener("contextmenu", disable, false);
-		}
-	);
+	clearTimeout(mouseUpTimeOutId);
+	mouseUp();
 });
 
 // after user scrolls tab, and mouses up, disable the contextmenu.
 // when tab on focus, disable the contextmenu.
 window.addEventListener("focus", function() {
 	window.addEventListener("contextmenu", disable, false);
+	setTimeout(removeDisableEventContextmenu, 1000);
 });
 
 // when tab not on focus, enable the contextmenu.
 window.addEventListener("blur", function() {
 	window.removeEventListener("contextmenu", disable, false);
 });
+
+function rightClicking() {
+	chrome.runtime.sendMessage({
+			action: "rightClickDown"
+		}, function(response) {
+		}
+	);
+}
+
+function mouseUp() {
+	chrome.runtime.sendMessage({
+			action: "ClickUp"
+		}, function(response) {
+
+			// enable the contextmenu.
+			removeDisableEventContextmenu();
+		}
+	);
+}
+
+function removeDisableEventContextmenu() {
+	window.removeEventListener("contextmenu", disable, false);
+}
 
 var disable = function(e) {
 	e.preventDefault();

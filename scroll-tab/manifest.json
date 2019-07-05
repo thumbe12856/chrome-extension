@@ -3,7 +3,7 @@
 
   "name": "Scroll Tab",
   "description": "Scrolling Chrome tab with mouse or keyboard.",
-  "version": "4.0",
+  "version": "4.2",
   "icons": {
     "16" : "icon.png",
     "48" : "icon.png",
