@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <title>Scroll Tab</title>
     <style>
       body {
@@ -35,6 +36,7 @@
 
   </head>
   <body>
+    <div id="browserInfo">Browser: <spen id="browser"></div></div>
     <div id="status">
       <h2 class="warning">If you find that it is not working,</h2>
       <h2 class="warning"> please press Ctrl + F5 on that page.</h2><br>
@@ -72,7 +74,8 @@
       </div>
     </div>
 
-    <script src="content.js"></script>     
+    <script src="../runtime.js"></script>
+    <script src="popup.js"></script>
   </body>
 </html>
 
