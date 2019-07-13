@@ -1,0 +1,27 @@
+{
+  "name": "scroll-tab",
+  "version": "4.2",
+  "description": "Scrolling Chrome tab with mouse or keyboard.",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thumbe12856/chrome-extension.git"
+  },
+  "author": "thumbe12856",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thumbe12856/chrome-extension/issues"
+  },
+  "homepage": "https://github.com/thumbe12856/chrome-extension#readme",
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}
