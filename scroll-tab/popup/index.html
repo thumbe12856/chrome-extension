@@ -35,6 +35,9 @@
       #browserInfo {
         text-align: right;
       }
+      .highlight {
+        color: red;
+      }
     </style>
 
   </head>
@@ -60,9 +63,9 @@
         <h1>Function 2, page up/down</h1>
         <span style="top: -40px; position: relative;">
           <input id="enableFunctionPageUp" type="checkbox" name="enableFunction" value="pageUp"><label for="enableFunctionPageUp">enable</label>
-          <span>Hold pressing Ctrl and Shift, and then key down PageUp or PageDown.</span>
+          <span>Hold pressing <span class="highlight">Ctrl</span> and <span class="highlight">Shift</span>, and then key down <span class="highlight">PageUp</span> or <span class="highlight">PageDown</span>.</span>
           <span>The tab will move its position with the direction.</span>
-          <span>PageUp to previous tab, PageDown to next tab.</span>
+          <span><span class="highlight">PageUp</span> to previous tab, <span class="highlight">PageDown</span> to next tab.</span>
         </span>
       </div>
 
@@ -70,9 +73,9 @@
         <h1>Function 3</h1>
         <span style="top: -40px; position: relative;">
           <input id="enableFunctionPopupTab" type="checkbox" name="enableFunction" value="popupTab"><label for="enableFunctionPopupTab">enable</label>
-          <span>Hold pressing Ctrl and Shift, and then key down "{" or "}".</span>
-          <span>Popup tab to temporary group by key down "{".</span>
-          <span>Just popup tab by key down "}".</span>
+          <span>Hold pressing <span class="highlight">Ctrl</span> and <span class="highlight">Shift</span>, and then key down <span class="highlight">{</span> or <span class="highlight">}</span> , <span class="highlight">*</span> or <span class="highlight">)</span> For Firefox.</span>
+          <span>Popup tab to temporary group by key down <span class="highlight">{</span> .</span>
+          <span>Just popup tab by key down <span class="highlight">}</span> .</span>
         </span>
       </div>
     </div>

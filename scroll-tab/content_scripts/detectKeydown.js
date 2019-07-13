@@ -9,17 +9,19 @@
 		ctrlKeydown = event.ctrlKey;
 		shiftKeydown = event.shiftKey;
 
-		console.log(event.key)
-
 		let direction = 0;
 		let popup = false;
 		let justpop = false;
 
 		if (ctrlKeydown && shiftKeydown) {
-			if (event.key === "PageUp") {
-				direction = -1; // firefox cannot detect it, since it is shortcut
-			} else if (event.key === "PageDown") {
-				direction = 1; // firefox cannot detect it, since it is shortcut
+			if (event.key === "PageUp") { // firefox cannot detect it, since it is shortcut
+				direction = -1;
+			} else if (event.key === "PageDown") { // firefox cannot detect it, since it is shortcut
+				direction = 1;
+			} else if (event.key === "*") { // keyboard '8'
+				direction = -1;
+			} else if (event.key === "(") { // keyboard '9'
+				direction = 1;
 			} else if (event.key === "{") {
 				popup = true;
 			} else if (event.key === "}") {
