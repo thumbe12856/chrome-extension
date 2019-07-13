@@ -1,9 +1,8 @@
 // execute detectScroll.js to detect mouse event.
-chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
-	if (changeInfo.status == "complete") {
-		chrome.tabs.executeScript(tabId, {file: "detectScroll.js"});
-		chrome.tabs.executeScript(tabId, {file: "detectKeydown.js"});
-		chrome.tabs.executeScript(tabId, {file: "content.js"});
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+	if (changeInfo.status === "complete" && changeInfo.url === undefined) {
+		chrome.tabs.executeScript(tabId, { file: "content_scripts/detectScroll.js" });
+		chrome.tabs.executeScript(tabId, { file: "content_scripts/detectKeydown.js" });
 	}
 });
 
@@ -15,145 +14,162 @@ var enableFunctionPageUp = true;
 var enableFunctionPopupTab = true;
 var mouseUpTimeOutId = 0;
 
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-	if(request) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+	if (request) {
 		receiveMsg(request, sender, sendResponse);
 	}
 });
 
-function receiveMsg(request, sender=null, sendResponse=null) {	
-	switch(request.action) {
-		//------- scrolling tab
-		case 'scrolling':
-			if(enableFunctionScrollTab && isRightClick) {
-				var responseMessage = scrollingEvent(request);
+function receiveMsg (request, sender = null, sendResponse = null) {
+	switch (request.action) {
+		// ------- scrolling tab
+		case "scrolling":
+			if (enableFunctionScrollTab && isRightClick) {
+				const responseMessage = scrollingEvent(request);
 				sendResponse(responseMessage);
 				clearTimeout(mouseUpTimeOutId);
 				mouseUpTimeOutId = setTimeout(mouseUp, 1000);
 			}
-		break;
+			break;
 
-		case 'rightClickDown':
+		case "rightClickDown":
 			isRightClick = true;
 			sendResponse("rightClickDown back.");
-		break;
+			break;
 
-		case 'ClickUp':
+		case "ClickUp":
 			isRightClick = false;
-			if(sendResponse) {
+			if (sendResponse) {
 				sendResponse("ClickUp back.");
 			}
-		break;
+			break;
 
-		//------- moving tab
-		case 'moving':
-			if(enableFunctionPageUp) {
-				var responseMessage = movingEvent(request);
+		// ------- moving tab
+		case "moving":
+			if (enableFunctionPageUp) {
+				const responseMessage = movingEvent(request);
 				sendResponse(responseMessage);
 			}
-		break;
+			break;
 
-		//------- popup tab
-		case 'popup':
-			if(enableFunctionPopupTab) {
-				var responseMessage = popupEvent(false);
+		// ------- popup tab
+		case "popup":
+			if (enableFunctionPopupTab) {
+				const responseMessage = popupEvent(false);
 				sendResponse(responseMessage);
 			}
-		break;
+			break;
 
-		case 'justpop':
-			var responseMessage = popupEvent(true);
+		case "justpop":
+			const responseMessage = popupEvent(true);
 			sendResponse(responseMessage);
-		break;
+			break;
 
-		case 'enableFunction':
-			if(request.status === "updateStatus") {
+		case "enableFunction":
+			if (request.status === "updateStatus") {
 				enableFunctionScrollTab = request.enableFunctionScrollTab;
 				enableFunctionPageUp = request.enableFunctionPageUp;
 				enableFunctionPopupTab = request.enableFunctionPopupTab;
 			}
 
-			enableFunction = {
-				'enableFunctionScrollTab': enableFunctionScrollTab,
-				'enableFunctionPageUp': enableFunctionPageUp,
-				'enableFunctionPopupTab': enableFunctionPopupTab
-			}
+			const enableFunction = {
+				enableFunctionScrollTab,
+				enableFunctionPageUp,
+				enableFunctionPopupTab
+			};
 
 			sendResponse(enableFunction);
-		break;
+			break;
 	}
 }
 
-function mouseUp() {
-	receiveMsg({"action": "ClickUp"});
+function mouseUp () {
+	receiveMsg({ action: "ClickUp" });
 }
 
-function findTheSelectedTab(fn) {
-  	chrome.windows.getLastFocused ({ 
-		populate: true 
-	}, function(window) {
+function findTheSelectedTab (fn) {
+	chrome.windows.getLastFocused({
+		populate: true
+	}, function (window) {
 		for (var i = 0; i < window.tabs.length; i++) {
 			// find the selected tab.
 			if (window.tabs[i].active) {
 				window.tabs[i].order = i;
 				var retrunTab = {
-					'previous': window.tabs[i - 1],
-					'now': window.tabs[i],
-					'next': window.tabs[i + 1]
-				}
+					previous: window.tabs[i - 1],
+					now: window.tabs[i],
+					next: window.tabs[i + 1]
+				};
 				fn(retrunTab);
 			}
 		}
 	});
 }
 
-function scrollingEvent(request) {
-	findTheSelectedTab(function(tab) {
-		if(request.direction === 1 && tab.next) {
-			chrome.tabs.update(tab.next.id, {active: true});
-		} else if(request.direction === -1 && tab.previous) {
-			chrome.tabs.update(tab.previous.id, {active: true});
+function scrollingEvent (request) {
+	findTheSelectedTab(function (tab) {
+		if (request.direction === 1 && tab.next) {
+			chrome.tabs.update(tab.next.id, { active: true });
+		} else if (request.direction === -1 && tab.previous) {
+			chrome.tabs.update(tab.previous.id, { active: true });
 		}
 	});
 
 	return "scroll back.";
 }
 
-function movingEvent(request) {
-	findTheSelectedTab(function(tab) {
+function movingEvent (request) {
+	findTheSelectedTab(function (tab) {
 		// moving the tab.
 		var i = tab.now.order;
-		if(request.direction === -1 && i === 0) {
+		if (request.direction === -1 && i === 0) {
 			return;
 		}
 
-		chrome.tabs.move(tab.now.id, {index: i + request.direction});
+		chrome.tabs.move(tab.now.id, { index: i + request.direction });
 	});
 
 	return "moving back.";
 }
 
 popupWindowId = 0;
-function popupEvent(justpop) {
-	findTheSelectedTab(function(tab) {
+function popupEvent (justpop) {
+	findTheSelectedTab(function (tab) {
 		// popup the tab.
 		// create a popup window to popupWindowId.
-		
-		chrome.windows.get(popupWindowId, function() {
-			if (justpop || chrome.runtime.lastError) { // popupWindowId not exists.
+		chrome.windows.getAll({ windowTypes: ["normal"] }, function (windows) {
+			const windowIds = windows.map(x => x.id);
+			if (!justpop && windowIds.includes(popupWindowId)) {
+				// popupWindowId exists.
+				chrome.tabs.move(tab.now.id, { windowId: popupWindowId, index: -1 });
+				chrome.windows.update(popupWindowId, { focused: true });
+			} else {
 				createNewWindow(justpop);
-			} else { // popupWindowId exists.
-				chrome.tabs.move(tab.now.id, {windowId: popupWindowId, index: -1});
-				chrome.windows.update(popupWindowId, {'focused': true});
 			}
 		});
 
-		function createNewWindow(justpop) {
-			chrome.windows.create({'tabId': tab.now.id, 'type': 'normal', 'focused': true}, function(window) {
-				if (!justpop) {
-					popupWindowId = window.id;
-				}
-			});
+		function createNewWindow (justpop) {
+			// Firefox now not support focused option
+			// ref: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create
+			const createDataTemplate = { tabId: tab.now.id, type: "normal" };
+			const createDataChrome = Object.assign({ focused: true }, createDataTemplate);
+			const createDataFirefox = createDataTemplate;
+			const createData = isFirefox === true ? createDataFirefox : createDataChrome;
+			if (isFirefox) {
+				// Firefox returns a promise
+				// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create
+				chrome.windows.create(createData).then(windowInfo => {
+					if (!justpop) {
+						popupWindowId = windowInfo.id;
+					}
+				});
+			} else {
+				chrome.windows.create(createData, function (window) {
+					if (!justpop) {
+						popupWindowId = window.id;
+					}
+				});
+			}
 		}
 	});
 
