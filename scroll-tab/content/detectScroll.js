@@ -1,4 +1,3 @@
-
 // Debounce Limitation for lodash
 const DebounceLimit = 100;
 
