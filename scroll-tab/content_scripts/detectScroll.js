@@ -5,11 +5,11 @@
 	const ScrollDebounceLimit = 0;
 
 	function ScrollHandler (event) {
-		function step (val) {
+		function ScrollStep (val) {
 			if (val >= 0) return -1;
 			else return 1;
 		}
-		const wDelta = isFirefox ? step(event.deltaY) * -1 : step(event.wheelDelta);
+		const wDelta = isFirefox ? ScrollStep(event.deltaY) * -1 : ScrollStep(event.wheelDelta);
 		if (wDelta !== 0) {
 			chrome.runtime.sendMessage({
 				action: "scrolling",
