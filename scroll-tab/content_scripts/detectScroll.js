@@ -1,7 +1,8 @@
 
 (() => {
 	// Debounce Limitation for lodash
-	const DebounceLimit = 0;
+	const DebounceLimit = 50;
+	const ScrollDebounceLimit = 0;
 
 	function ScrollHandler (event) {
 		function step (val) {
@@ -51,7 +52,7 @@
 	}
 
 	const scrollEventDetectionString = isFirefox ? "wheel" : "mousewheel";
-	window.addEventListener(scrollEventDetectionString, _.debounce(ScrollHandler, DebounceLimit));
+	window.addEventListener(scrollEventDetectionString, _.debounce(ScrollHandler, ScrollDebounceLimit));
 	window.addEventListener("mousedown", _.debounce(MouseDownHandler, DebounceLimit));
 	window.addEventListener("mouseup", _.debounce(MouseUpHandler, DebounceLimit));
 	window.addEventListener("focus", _.debounce(FocusHandler, DebounceLimit));
