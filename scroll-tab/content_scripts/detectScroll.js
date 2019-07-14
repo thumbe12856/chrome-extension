@@ -1,15 +1,14 @@
 
 (() => {
 	// Debounce Limitation for lodash
-	const DebounceLimit = 100;
+	const DebounceLimit = 0;
 
 	function ScrollHandler (event) {
 		function step (val) {
-			if (val > 0) return 1;
-			else if (val < 0) return -1;
-			else return 0;
+			if (val >= 0) return -1;
+			else return 1;
 		}
-		const wDelta = step(event.wheelDelta || event.deltaY);
+		const wDelta = isFirefox ? step(event.deltaY) * -1 : step(event.wheelDelta);
 		if (wDelta !== 0) {
 			chrome.runtime.sendMessage({
 				action: "scrolling",
