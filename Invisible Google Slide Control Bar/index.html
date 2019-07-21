@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Invisible Google Slide Control Bar</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+      }
+      #status {
+        white-space: pre;
+        padding-right: 15px;
+      }
+      #status .warning {
+        color: red;
+        margin: 0;
+        margin-top: -40px;
+      }
+      #status .advise {
+        color: #CBB12F;
+        margin: 0;
+        margin-top: -40px;
+      } 
+      #status div {
+        margin-top: -150px;
+        position: relative;
+      }
+      #status #firstDiv {
+        margin-top: -80px;
+      }
+      #browserInfo {
+        text-align: right;
+      }
+      .highlight {
+        color: red;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="status">
+
+      <div id="firstDiv">
+        <h3>Invisible Google Slide Control Bar</h3>
+        <span style="top: -40px; position: relative;">
+          <input id="enableControl" type="checkbox" name="enableFunction" value="scrollTab" ><label for="enableControl">enable</label>
+        </span>
+      </div>
+
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
+
