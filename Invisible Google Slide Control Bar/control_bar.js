@@ -33,6 +33,9 @@ var ori_position = "";
 							var arrow = control_element("arrow");
 							div.appendChild(arrow);
 							arrow.addEventListener("click", function() {MoveHandler(div, arrow)}, true);
+							arrow_bg = iframe[0].contentWindow.document.getElementById("arrow_bg");
+							arrow.addEventListener("mouseover", function() {control_element("mouseover", arrow_bg)}, false);
+							arrow.addEventListener("mouseout", function() {control_element("mouseout", arrow_bg)}, false);
 						}
 					} else {
 						is_fail = true;
@@ -53,7 +56,7 @@ var ori_position = "";
 	}
 
 	// Build elements
-	function control_element(item) {
+	function control_element(item, arrow_bg=null) {
 		var element = "";
 		
 		if(item === "bar") {
@@ -77,11 +80,16 @@ var ori_position = "";
 			node1.setAttribute("tabindex", "0");
 			
 			var node2 = document.createElement("div");
+			node2.setAttribute("id", "arrow_bg");
 			node2.setAttribute("class", "punch-viewer-icon-large punch-viewer-options goog-inline-block");
-			node2.setAttribute("style", "width: 14px;height: 50px;background: url(//i.imgur.com/EgMwR1u.png);");
+			node2.setAttribute("style", "width: 14px; height: 50px; background: url(//i.imgur.com/bAWIvCh.png);");
 
 			node1.appendChild(node2);
 			element = node1;
+		} else if(item == "mouseover") {
+			arrow_bg.setAttribute("style", "width: 14px; height: 50px; background: url(//i.imgur.com/PAiPmLH.png);");
+		} else if(item == "mouseout") {
+			arrow_bg.setAttribute("style", "width: 14px; height: 50px; background: url(//i.imgur.com/bAWIvCh.png);");
 		}
 
 		return element;

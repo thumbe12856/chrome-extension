@@ -3,7 +3,7 @@
 
   "name": "Invisible Google Slide Control Bar",
   "description": "Control your Google Slide control bar.",
-  "version": "1.0",
+  "version": "1.1",
   "icons": {
     "16" : "icon.png",
     "48" : "icon.png",
@@ -21,8 +21,6 @@
     "js": ["assets/lodash.min.js"]
   }],
   "permissions": [
-    "*://*/*",
-    "activeTab",
-    "tabs"
+    "*://*/*"
   ]
 }
